@@ -6,6 +6,8 @@ import com.juziwl.palette.netty.model.BaseMsg;
 import com.juziwl.palette.netty.model.PushMsg;
 import com.orhanobut.logger.Logger;
 
+import java.util.List;
+
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -92,7 +94,8 @@ public class NettyServerBootstrap {
     }
 
     public void pushAll(BaseMsg pushMsg) {
-        for (SocketChannel channel : NettyChannelMap.getAll()) {
+        List<SocketChannel> all = NettyChannelMap.getAll();
+        for (SocketChannel channel : all) {
             if (channel != null) {
                 channel.writeAndFlush(pushMsg);
             }

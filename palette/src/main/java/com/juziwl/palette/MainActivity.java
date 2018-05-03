@@ -1,10 +1,12 @@
 package com.juziwl.palette;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.juziwl.palette.config.Global;
 import com.juziwl.palette.netty.NettyConfig;
 import com.juziwl.palette.netty.client.NettyClientBootstrap;
 import com.juziwl.palette.netty.model.BaseMsg;
@@ -12,9 +14,11 @@ import com.juziwl.palette.netty.model.LoginMsg;
 import com.juziwl.palette.netty.model.MsgType;
 import com.juziwl.palette.netty.model.PushMsg;
 import com.juziwl.palette.netty.server.NettyServerBootstrap;
+import com.juziwl.palette.observer.ObserverableUtils;
 import com.juziwl.palette.util.DisplayUtils;
 import com.juziwl.palette.util.ThreadExecutor;
 import com.juziwl.palette.util.ToastUtils;
+import com.juziwl.palette.util.UIHandler;
 import com.juziwl.palette.util.Utils;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,11 +37,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void beServer(View view) {
+        Global.isServer = true;
         ThreadExecutor.runInThreadPool(() -> NettyServerBootstrap.getInstance().create(new NettyServerBootstrap.OnStartListener() {
             @Override
             public void onSuccess() {
                 ToastUtils.showToast(getApplicationContext(), "服务器启动成功");
-
+                startActivity(new Intent(MainActivity.this, DrawActivity.class));
             }
 
             @Override
@@ -61,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void beClient(View view) {
+        Global.isServer = false;
         ThreadExecutor.runInThreadPool(() -> {
             NettyConfig.SERVER_HOST = etIpaddr.getText().toString();
             NettyClientBootstrap.getInstance().closeChannel();
@@ -73,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess() {
                     ToastUtils.showToast(getApplicationContext(), "连接服务器成功");
+                    startActivity(new Intent(MainActivity.this, DrawActivity.class));
                 }
 
                 @Override
@@ -88,6 +95,8 @@ public class MainActivity extends AppCompatActivity {
                         Global.serverScreenWidth = loginMsg.screenWidth;
                         Global.widthRate = DisplayUtils.getScreenWidth() * 1f / loginMsg.screenWidth;
                         Global.heightRate = DisplayUtils.getScreenHeight() * 1f / loginMsg.screenHeight;
+                    } else if (baseMsg.type == MsgType.PUSH) {
+                        UIHandler.getInstance().post(() -> ObserverableUtils.getInstance().notifyObserversChanged(baseMsg));
                     }
                 }
             });

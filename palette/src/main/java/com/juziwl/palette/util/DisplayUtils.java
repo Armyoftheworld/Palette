@@ -10,7 +10,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 
-import com.juziwl.palette.Global;
+import com.juziwl.palette.config.Global;
 
 
 /**

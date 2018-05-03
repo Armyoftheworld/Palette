@@ -1,7 +1,8 @@
-package com.juziwl.palette;
+package com.juziwl.palette.config;
 
 import android.app.Application;
 
+import com.juziwl.palette.BuildConfig;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 

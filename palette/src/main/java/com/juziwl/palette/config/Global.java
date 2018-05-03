@@ -1,4 +1,4 @@
-package com.juziwl.palette;
+package com.juziwl.palette.config;
 
 import android.app.Application;
 
@@ -15,4 +15,6 @@ public class Global {
     public static int serverScreenHeight = 0;
     public static float widthRate = 0;
     public static float heightRate = 0;
+
+    public static boolean isServer = true;
 }
