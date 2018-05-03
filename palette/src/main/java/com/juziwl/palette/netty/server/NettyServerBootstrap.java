@@ -2,6 +2,7 @@ package com.juziwl.palette.netty.server;
 
 
 import com.juziwl.palette.netty.NettyConfig;
+import com.juziwl.palette.netty.model.BaseMsg;
 import com.juziwl.palette.netty.model.PushMsg;
 import com.orhanobut.logger.Logger;
 
@@ -90,7 +91,7 @@ public class NettyServerBootstrap {
         }
     }
 
-    public void pushAll(PushMsg pushMsg) {
+    public void pushAll(BaseMsg pushMsg) {
         for (SocketChannel channel : NettyChannelMap.getAll()) {
             if (channel != null) {
                 channel.writeAndFlush(pushMsg);
@@ -98,7 +99,7 @@ public class NettyServerBootstrap {
         }
     }
 
-    public void push(String clientId, PushMsg pushMsg) {
+    public void push(String clientId, BaseMsg pushMsg) {
         SocketChannel channel = (SocketChannel) NettyChannelMap.get(clientId);
         if (channel != null) {
             channel.writeAndFlush(pushMsg);
@@ -112,5 +113,7 @@ public class NettyServerBootstrap {
         void onFailure();
 
         void receiveData(PushMsg pushMsg);
+
+        void onClientConnect(String clientId);
     }
 }

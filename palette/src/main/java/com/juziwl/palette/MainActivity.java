@@ -7,8 +7,12 @@ import android.widget.TextView;
 
 import com.juziwl.palette.netty.NettyConfig;
 import com.juziwl.palette.netty.client.NettyClientBootstrap;
+import com.juziwl.palette.netty.model.BaseMsg;
+import com.juziwl.palette.netty.model.LoginMsg;
+import com.juziwl.palette.netty.model.MsgType;
 import com.juziwl.palette.netty.model.PushMsg;
 import com.juziwl.palette.netty.server.NettyServerBootstrap;
+import com.juziwl.palette.util.DisplayUtils;
 import com.juziwl.palette.util.ThreadExecutor;
 import com.juziwl.palette.util.ToastUtils;
 import com.juziwl.palette.util.Utils;
@@ -33,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess() {
                 ToastUtils.showToast(getApplicationContext(), "服务器启动成功");
+
             }
 
             @Override
@@ -43,6 +48,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void receiveData(PushMsg pushMsg) {
 
+            }
+
+            @Override
+            public void onClientConnect(String clientId) {
+                LoginMsg loginMsg = new LoginMsg();
+                loginMsg.screenWidth = DisplayUtils.getScreenWidth();
+                loginMsg.screenHeight = DisplayUtils.getScreenHeight();
+                NettyServerBootstrap.getInstance().push(clientId, loginMsg);
             }
         }));
     }
@@ -68,8 +81,14 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void receiveData(PushMsg pushMsg) {
-
+                public void receiveData(BaseMsg baseMsg) {
+                    if (baseMsg.type == MsgType.LOGIN) {
+                        LoginMsg loginMsg = (LoginMsg) baseMsg;
+                        Global.serverScreenHeight = loginMsg.screenHeight;
+                        Global.serverScreenWidth = loginMsg.screenWidth;
+                        Global.widthRate = DisplayUtils.getScreenWidth() * 1f / loginMsg.screenWidth;
+                        Global.heightRate = DisplayUtils.getScreenHeight() * 1f / loginMsg.screenHeight;
+                    }
                 }
             });
         });

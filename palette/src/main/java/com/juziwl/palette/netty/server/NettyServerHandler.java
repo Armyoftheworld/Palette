@@ -62,6 +62,9 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
                 //登录成功,把channel存到服务端的map中
                 NettyChannelMap.add(loginMsg.clientId, (SocketChannel) ctx.channel());
                 Logger.d("用户 " + loginMsg.clientId + " 登录成功");
+                if (onStartListener != null) {
+                    onStartListener.onClientConnect(loginMsg.clientId);
+                }
             }
         } else if (MsgType.PUSH.equals(baseMsg.type)) {
             PushMsg pushMsg = (PushMsg) baseMsg;

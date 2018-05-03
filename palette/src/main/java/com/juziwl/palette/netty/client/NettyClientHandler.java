@@ -2,8 +2,6 @@ package com.juziwl.palette.netty.client;
 
 
 import com.juziwl.palette.netty.model.BaseMsg;
-import com.juziwl.palette.netty.model.MsgType;
-import com.juziwl.palette.netty.model.PushMsg;
 import com.juziwl.palette.util.Utils;
 import com.orhanobut.logger.Logger;
 
@@ -40,11 +38,8 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
     //这里是接受服务端发送过来的消息
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, BaseMsg baseMsg) throws Exception {
-        if (baseMsg.type == MsgType.PUSH) {
-            PushMsg pushMsg = (PushMsg) baseMsg;
-            if (listener != null) {
-                listener.receiveData(pushMsg);
-            }
+        if (listener != null) {
+            listener.receiveData(baseMsg);
         }
         ReferenceCountUtil.release(baseMsg);
     }

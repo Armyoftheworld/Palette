@@ -10,9 +10,20 @@ package com.juziwl.palette.netty.model;
 public class LoginMsg extends BaseMsg {
     public String username = "";
     public String password = "";
+    public int screenWidth = 0, screenHeight = 0;
 
     public LoginMsg() {
         super();
         type = MsgType.LOGIN;
+    }
+
+    @Override
+    public String toString() {
+        return "LoginMsg{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", screenWidth=" + screenWidth +
+                ", screenHeight=" + screenHeight +
+                '}';
     }
 }

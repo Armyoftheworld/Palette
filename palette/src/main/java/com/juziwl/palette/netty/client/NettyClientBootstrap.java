@@ -1,6 +1,7 @@
 package com.juziwl.palette.netty.client;
 
 
+import com.juziwl.palette.netty.model.BaseMsg;
 import com.juziwl.palette.util.Utils;
 import com.juziwl.palette.netty.NettyConfig;
 import com.juziwl.palette.netty.model.LoginMsg;
@@ -140,6 +141,6 @@ public class NettyClientBootstrap {
 
         void onFailure();
 
-        void receiveData(PushMsg pushMsg);
+        void receiveData(BaseMsg baseMsg);
     }
 }
