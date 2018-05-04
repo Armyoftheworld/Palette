@@ -16,6 +16,7 @@ import android.view.View;
 import com.juziwl.palette.config.Global;
 import com.juziwl.palette.netty.model.PushMsg;
 import com.juziwl.palette.netty.server.NettyServerBootstrap;
+import com.juziwl.palette.util.DisplayUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,8 +80,8 @@ public class PaletteView extends View {
         mPaint.setFilterBitmap(true);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
-        mDrawSize = 20;
-        mEraserSize = 40;
+        mDrawSize = DisplayUtils.dip2px(5);
+        mEraserSize = DisplayUtils.dip2px(8);
         mPaint.setStrokeWidth(mDrawSize);
         mPaint.setColor(0XFF000000);
 

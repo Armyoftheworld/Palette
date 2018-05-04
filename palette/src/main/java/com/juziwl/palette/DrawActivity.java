@@ -44,7 +44,7 @@ public class DrawActivity extends AppCompatActivity implements Observer {
         if (o instanceof PushMsg) {
             if (paletteView != null) {
                 PushMsg pushMsg = (PushMsg) o;
-                paletteView.acceptOrder(pushMsg.eventType, pushMsg.x, pushMsg.y);
+                paletteView.acceptOrder(pushMsg.eventType, pushMsg.x * Global.widthRate, pushMsg.y * Global.heightRate);
             }
         }
 
